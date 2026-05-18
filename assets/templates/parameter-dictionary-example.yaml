@@ -1,0 +1,136 @@
+defaults:
+  time_range: current_natural_month
+  row_limit: 10
+
+
+# 新增：时间范围规则定义
+time_range_rules:
+  current_natural_month:
+    description: 当前自然月，按完整自然月补全，不截到今天
+    calculation: "MONTH(CURRENT_DATE)"
+    start_date_sql: "DATE_TRUNC('month', CURRENT_DATE)"
+    end_date_sql: "LAST_DAY(CURRENT_DATE)"
+
+  current_year:
+    description: 当前自然年，按完整自然年补全，不截到今天
+    calculation: "YEAR(CURRENT_DATE)"
+    start_date_sql: "DATE_TRUNC('year', CURRENT_DATE)"
+    end_date_sql: "DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year' - INTERVAL '1 day'"
+
+  previous_year:
+    description: 上一个自然年
+    start_date_sql: "DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year'"
+    end_date_sql: "DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 day'"
+    
+  current_quarter:
+    description: 当前自然季度，按完整自然季度补全，不截到今天
+    calculation: "QUARTER(CURRENT_DATE)"
+    start_date_sql: "DATE_TRUNC('quarter', CURRENT_DATE)"
+    end_date_sql: "DATE_TRUNC('quarter', CURRENT_DATE) + INTERVAL '3 month' - INTERVAL '1 day'"
+    
+  previous_quarter:
+    description: 上一个季度
+    start_date_sql: "DATE_TRUNC('quarter', CURRENT_DATE) - INTERVAL '3 month'"
+    end_date_sql: "DATE_TRUNC('quarter', CURRENT_DATE) - INTERVAL '1 day'"
+    
+  recent_7_days:
+    description: 最近7天
+    start_date_sql: "CURRENT_DATE - INTERVAL '7 day'"
+    end_date_sql: "CURRENT_DATE"
+
+
+parameters:
+  start_date:
+    type: date
+    description: 查询开始日期，用于计算时间范围与展示给用户
+    fill_rule: derive_from_time_range
+    # 新增：告诉机器人如何从 time_range_rules 获取值
+    source: time_range_rules[selected_time_range].start_date_sql
+    
+  end_date:
+    type: date
+    description: 查询结束日期，用于计算时间范围与展示给用户
+    fill_rule: derive_from_time_range
+    source: time_range_rules[selected_time_range].end_date_sql
+
+  start_month:
+    type: string
+    description: 用于 SQL 的起始月份，格式必须对齐为 yyyy-MM
+    fill_rule: derive_from_start_date_format_month
+    source: format(start_date, 'yyyy-MM')
+
+  end_month:
+    type: string
+    description: 用于 SQL 的结束月份，格式必须对齐为 yyyy-MM
+    fill_rule: derive_from_end_date_format_month
+    source: format(end_date, 'yyyy-MM')
+
+  query_month_range:
+    type: string
+    description: 展示用查询月份范围，基于 start_month / end_month 生成，格式形如 2026-01 ~ 2026-12
+    fill_rule: derive_from_start_month_end_month
+    source: start_month + " ~ " + end_month
+
+  type:
+    type: string
+    description: 指标口径类型；用户问接单/下单时取“接单指标”，问出货时取“出货指标”，未明确时默认“接单指标”
+    fill_rule: derive_from_metric_intent_default_order
+    source: field_enum_dictionary.type.values[selected_type].sql_value
+
+  nick_name:
+    type: string
+    description: 销售人员字段，对应表字段 nick_name；可用于筛选，也可作为聚合维度
+    fill_rule: optional
+
+  source:
+    type: string
+    description: 二级团队/二级部门字段，对应表字段 source；可用于筛选，也可作为聚合维度
+    fill_rule: optional
+
+  dept:
+    type: string
+    description: 一级团队/一级部门字段，对应表字段 dept；可用于筛选，也可作为聚合维度
+    fill_rule: optional
+
+  director_nick_name:
+    type: string
+    description: 二级部门经理/二级部门leader字段，对应表字段 director_nick_name；可用于筛选，也可作为聚合维度
+    fill_rule: optional
+
+  manager_nick_name:
+    type: string
+    description: 一级部门经理/一级部门leader字段，对应表字段 manager_nick_name；可用于筛选，也可作为聚合维度
+    fill_rule: optional
+
+  # group_by_field 是“用户想按哪个字段拆分”的结构化结果；
+  # group_by_select 和 group_by_clause 则是由它自动派生出的 SQL 片段。
+  group_by_field:
+    type: string
+    description: 聚合维度字段名，仅允许 nick_name、source、dept、director_nick_name、manager_nick_name
+    fill_rule: optional
+    source: term_mapping.field_aliases
+
+  group_by_select:
+    type: string
+    description: 由 group_by_field 派生的 select 片段；有聚合维度时形如 "<field> as group_dimension,"
+    fill_rule: derive_from_group_by_field
+    source: group_by_field -> "<field> as group_dimension," or ""
+
+  group_by_clause:
+    type: string
+    description: 由 group_by_field 派生的 group by 片段；有聚合维度时形如 "group by <field>"
+    fill_rule: derive_from_group_by_field
+    source: group_by_field -> "group by <field>" or ""
+   
+  org_name:
+    type: string
+    description: 标准组织名称
+    fill_rule: optional
+  product_line:
+    type: string
+    description: 标准产品线
+    fill_rule: optional
+  top_n:
+    type: integer
+    description: 排名条数
+    fill_rule: default_10_max_50

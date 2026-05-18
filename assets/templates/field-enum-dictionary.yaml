@@ -1,0 +1,140 @@
+fields:
+  type:
+    display_name: 指标口径类型
+    description: 用于区分接单指标与出货指标；用户未明确时默认接单指标
+    values:
+      order_metric:
+        display_name: 接单指标
+        sql_value: 接单指标
+        aliases:
+          - 接单
+          - 下单
+          - 订单
+      shipment_metric:
+        display_name: 出货指标
+        sql_value: 出货指标
+        aliases:
+          - 出货
+          - 发货
+
+  region:
+    display_name: 地理区域
+    description: 国际业务的区域划分
+    values:
+      asia:
+        display_name: 亚洲
+        is_parent_region: true
+        sub_regions: [asia_ex_japan_korea, japan_korea]
+        sql_values: [亚洲（除日韩）, 日韩]
+        aliases:
+          - 亚洲
+          - 亚洲地区
+      asia_ex_japan_korea:
+        display_name: 亚洲（除日韩）
+        sql_value: 亚洲（除日韩）
+        aliases:
+          - 亚洲
+          - 东南亚
+          - 亚洲其他
+          - 亚洲（除日韩）
+      japan_korea:
+        display_name: 日韩
+        sql_value: 日韩
+        aliases:
+          - 日韩
+          - 日本韩国
+          - 东亚
+      americas:
+        display_name: 美洲
+        sql_value: 美洲
+        aliases:
+          - 美洲
+          - 北美
+          - 南美
+          - 美国
+          - 加拿大
+          - 拉美
+      south_america:
+        display_name: 南美洲
+        sql_value: 南美洲
+        aliases:
+          - 南美洲
+          - 南美
+          - 拉美
+      europe:
+        display_name: 欧洲
+        sql_value: 欧洲
+        aliases:
+          - 欧洲
+          - 欧洲地区
+      oceania:
+        display_name: 大洋洲
+        sql_value: 大洋洲
+        aliases:
+          - 大洋洲
+          - 澳新地区
+      africa_middle_east:
+        display_name: 非洲与中东
+        sql_value: 非洲与中东
+        aliases:
+          - 非洲
+          - 中东
+          - 非洲与中东
+
+  nick_name:
+    display_name: 销售
+    description: 销售人员昵称字段
+    sql_column: nick_name
+    aliases:
+      - 销售
+      - 销售姓名
+      - 销售人员
+      - 销售专家
+      - 销售专员
+    capabilities:
+      - filter
+      - group_by
+
+  source:
+    display_name: 二级团队/二级部门
+    description: 二级团队或二级部门字段
+    sql_column: source
+    aliases:
+      - 二级团队
+      - 二级部门
+    capabilities:
+      - filter
+      - group_by
+
+  dept:
+    display_name: 一级团队/一级部门
+    description: 一级团队或一级部门字段
+    sql_column: dept
+    aliases:
+      - 一级团队
+      - 一级部门
+    capabilities:
+      - filter
+      - group_by
+
+  director_nick_name:
+    display_name: 二级部门经理/二级部门leader
+    description: 二级部门经理字段
+    sql_column: director_nick_name
+    aliases:
+      - 二级部门经理
+      - 二级部门leader
+    capabilities:
+      - filter
+      - group_by
+
+  manager_nick_name:
+    display_name: 一级部门经理/一级部门leader
+    description: 一级部门经理字段
+    sql_column: manager_nick_name
+    aliases:
+      - 一级部门经理
+      - 一级部门leader
+    capabilities:
+      - filter
+      - group_by

@@ -1,0 +1,65 @@
+metric_aliases:
+  销售额: sales_amount
+  康养销售额: sales_amount
+  单量: order_cnt
+
+type_aliases:
+  接单: 接单指标
+  下单: 接单指标
+  订单: 接单指标
+  出货: 出货指标
+  发货: 出货指标
+
+time_range_aliases:
+  本月: current_natural_month
+  上月: previous_natural_month
+  最近一周: recent_7_days
+  今年: current_year
+  本年: current_year
+  去年: previous_year
+  本季度: current_quarter
+  这个季度: current_quarter
+  上季度: previous_quarter
+  上个季度: previous_quarter
+
+region_aliases:
+  亚洲: 亚洲
+  亚洲（除日韩）: 亚洲（除日韩）
+  日韩: 日韩
+  日本韩国: 日韩
+  北美洲（除加拿大）: 北美洲（除加拿大）
+  美洲: 北美洲（除加拿大）
+  北美: 北美洲（除加拿大）
+  美国: 北美洲（除加拿大）
+  南美: 南美洲
+  拉美: 南美洲
+  欧洲: 欧洲
+  欧洲地区: 欧洲
+  大洋洲: 大洋洲
+  澳新地区: 大洋洲
+  中美及加勒比: 中美及加勒比
+
+dimension_aliases:
+  康养: 医疗康养业务
+  医疗康养: 医疗康养业务
+  康养接单: 接单指标
+  医疗康养接单: 接单指标
+  康养下单: 接单指标
+  医疗康养下单: 接单指标
+  康养出货: 出货指标
+  医疗康养出货: 出货指标
+
+field_aliases:
+  销售: nick_name
+  销售姓名: nick_name
+  销售人员: nick_name
+  销售专家: nick_name
+  销售专员: nick_name
+  二级团队: source
+  二级部门: source
+  一级团队: dept
+  一级部门: dept
+  二级部门经理: director_nick_name
+  二级部门leader: director_nick_name
+  一级部门经理: manager_nick_name
+  一级部门leader: manager_nick_name
