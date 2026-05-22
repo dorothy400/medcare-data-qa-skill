@@ -43,12 +43,17 @@ where
     and (${factory} IS NULL OR factory = '${factory}')                                     -- 工厂
     and (${customer_short_name} IS NULL OR customer_short_name = '${customer_short_name}') -- 客户简称
 
-    -- 产品维度筛选（可选；三层分类：大类 → 材料 → 详细物料名）
-    and (${product_type} IS NULL OR product_type = '${product_type}')                      -- 产品大类（手动轮椅/电动轮椅等）
+    -- 产品维度筛选（可选；四层分类：大类 → 材料 → 详细物料名 → 型号代码）
+    and (${product_type} IS NULL OR product_type = '${product_type}')                      -- 产品大类（手动轮椅/电动轮椅/助行器等）
     and (${material} IS NULL OR material = '${material}')                                  -- 材料（铁质/碳纤维等）
     -- material_name 必须用 LIKE 模糊查询，因为存的是含型号规格的全名
     -- 例：'轮椅 智能化多功能可调节轮椅 Y069型 YK253139-2 24寸 表面喷塑黑'
     and (${material_name} IS NULL OR material_name LIKE '%${material_name}%')             -- 详细物料名（模糊查询）
+    -- remark = 产品型号/系列代码，短字符串，常用精确匹配；用户给完整代码时用 = ，只给一半时用 LIKE
+    -- 例：'SPIRIT X4' / 'Y069' / 'A100'
+    and (${remark} IS NULL OR remark = '${remark}')                                        -- 型号代码（精确匹配）
+    -- 模糊变体（用户只给型号一部分时用）：
+    -- and (${remark_fuzzy} IS NULL OR remark LIKE '%${remark_fuzzy}%')
 
     -- 订单明细筛选（可选，数值字段用范围查询）
     and (${price_min} IS NULL OR price >= ${price_min})                                    -- 单价下限（USD）

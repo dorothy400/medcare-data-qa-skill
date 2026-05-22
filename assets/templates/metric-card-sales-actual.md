@@ -68,12 +68,17 @@ healthy_order（即"接单 / 下单"；用户未明确说"出货"时取此默认
 - `factory`（工厂）
 - `customer_short_name`（客户简称）
 
-产品维度（3，三层分类）：
-- `product_type`（产品大类，如 手动轮椅 / 电动轮椅，精确匹配）
+产品维度（4，四层分类）：
+- `product_type`（产品大类，如 手动轮椅 / 电动轮椅 / 助行器，精确匹配）
 - `material`（材料，如 铁质 / 碳纤维，精确匹配）
 - `material_name`（详细物料名，含型号规格的全名；**必须用 `LIKE '%xxx%'` 模糊查询**，不要用 `=`）
   - 示例值：`轮椅 智能化多功能可调节轮椅 Y069型 YK253139-2 24寸 表面喷塑黑`
-  - 用户问"某个具体产品"时（带规格 / 型号 / 颜色 / 尺寸），定位到此字段
+  - 用户给的是带规格 / 颜色 / 尺寸的长描述时，定位到此字段
+- `remark`（型号 / 系列代码，短字符串；默认精确匹配，必要时 LIKE）
+  - 示例值：`SPIRIT X4` / `Y069` / `A100`
+  - 用户给的是简短型号代码（字母数字组合）时，定位到此字段
+  - **典型查询**：用户问"助行器 X4" → `product_type = '助行器' AND remark = 'SPIRIT X4'`
+  - 如果用户只给型号一部分（如"X4"而不是"SPIRIT X4"）：用 `remark LIKE '%X4%'` 兜底
 
 订单明细维度（2，数值字段，用范围查询）：
 - `price`（单价 USD；筛选用 `price BETWEEN x AND y` 或 `price >= x`）
@@ -98,7 +103,7 @@ healthy_order（即"接单 / 下单"；用户未明确说"出货"时取此默认
 - `sales_organization` / `factory` / `customer_short_name`
 
 产品维度：
-- `product_type` / `material` / `material_name`
+- `product_type` / `material` / `material_name` / `remark`
 
 订单明细维度（数值字段，可按区间分桶 group by）：
 - `price` 单价区段（如 0–100 / 100–500 / 500+ USD）

@@ -135,7 +135,7 @@ field_aliases:
     销售组织: sales_organization
     工厂: factory
     生产工厂: factory
-    # 产品（三层分类）
+    # 产品（四层分类）
     产品大类: product_type
     产品品类: product_type
     品类: product_type
@@ -145,11 +145,15 @@ field_aliases:
     # 当用户给的是带型号/规格/颜色/尺寸的"具体产品名"时，路由到 material_name (模糊查询)
     具体产品: material_name
     产品: material_name           # 默认按 material_name 模糊查；只有用户明显指"大类"时才用 product_type
-    型号: material_name
     规格: material_name
     SKU: material_name
     商品名: material_name
     物料名: material_name
+    # 当用户给的是短型号代码（字母数字组合，如 X4 / Y069 / A100 / SPIRIT X4），路由到 remark (默认精确匹配)
+    型号: remark
+    型号代码: remark
+    系列: remark
+    系列代码: remark
     # 订单明细（数值字段，按范围筛选）
     单价: price
     价格: price
