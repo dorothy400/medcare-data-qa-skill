@@ -54,6 +54,7 @@ def build_record(data: dict) -> dict:
         "metric": data.get("metric"),
         "filters": data.get("filters"),
         "template": data.get("template"),
+        "purpose": data.get("purpose"),
         "sql": truncate_sql(data.get("sql")),
         "row_count": data.get("row_count"),
         "latency_ms": data.get("latency_ms"),

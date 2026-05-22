@@ -1,14 +1,57 @@
 metric_aliases:
-  销售额: sales_amount
-  康养销售额: sales_amount
-  单量: order_cnt
+  # ── 销售目标（target）→ sales_target_healthy → ADS_YL.ads_external_healthy_order_shipment_target
+  销售目标: sales_target_healthy
+  目标: sales_target_healthy
+  目标额: sales_target_healthy
+  康养销售目标: sales_target_healthy
+  医疗康养销售目标: sales_target_healthy
+  接单目标: sales_target_healthy   # 配合 type='接单指标'
+  出货目标: sales_target_healthy   # 配合 type='出货指标'
+  下单目标: sales_target_healthy   # 配合 type='接单指标'
+
+  # ── 实际销售额（actual）→ sales_amount_healthy_actual → ADS_YL.ads_external_order_day_result
+  销售额: sales_amount_healthy_actual
+  实际销售额: sales_amount_healthy_actual
+  已卖了多少: sales_amount_healthy_actual
+  销售业绩: sales_amount_healthy_actual
+  实际销售: sales_amount_healthy_actual
+  已完成销售: sales_amount_healthy_actual
+  康养销售额: sales_amount_healthy_actual
+  医疗康养销售额: sales_amount_healthy_actual
+  康养接单销售额: sales_amount_healthy_actual   # 配合 type='healthy_order'
+  康养下单销售额: sales_amount_healthy_actual   # 配合 type='healthy_order'
+  康养出货销售额: sales_amount_healthy_actual   # 配合 type='healthy_shipment'
+
+  # ── 完成率 / 达成率 → 需要同时查目标 + 实际，做 join 后算除法
+  完成率: completion_rate         # = sales_amount_healthy_actual / sales_target_healthy
+  达成率: completion_rate
+  目标完成度: completion_rate
+  完成情况: completion_rate
 
 type_aliases:
-  接单: 接单指标
-  下单: 接单指标
-  订单: 接单指标
-  出货: 出货指标
-  发货: 出货指标
+  # 注意：type 字段在两张表里取值不同
+  # 目标表 ads_external_healthy_order_shipment_target: 接单指标 / 出货指标
+  # 实际表 ads_external_order_day_result:              healthy_order / healthy_shipment
+  # 解析用户问法时，先决定指标（target 还是 actual），再决定 type 取值
+
+  # 用户用语 → 目标表的 type 取值
+  target_type:
+    接单: 接单指标
+    接单目标: 接单指标
+    下单: 接单指标
+    下单目标: 接单指标
+    订单: 接单指标
+    出货: 出货指标
+    出货目标: 出货指标
+    发货: 出货指标
+
+  # 用户用语 → 实际表的 type 取值
+  actual_type:
+    接单: healthy_order
+    下单: healthy_order
+    订单: healthy_order
+    出货: healthy_shipment
+    发货: healthy_shipment
 
 time_range_aliases:
   本月: current_natural_month
@@ -42,24 +85,91 @@ region_aliases:
 dimension_aliases:
   康养: 医疗康养业务
   医疗康养: 医疗康养业务
-  康养接单: 接单指标
+  康养接单: 接单指标      # 即"康养接单目标"
   医疗康养接单: 接单指标
   康养下单: 接单指标
   医疗康养下单: 接单指标
-  康养出货: 出货指标
+  康养出货: 出货指标      # 即"康养出货目标"
   医疗康养出货: 出货指标
 
 field_aliases:
-  销售: nick_name
-  销售姓名: nick_name
-  销售人员: nick_name
-  销售专家: nick_name
-  销售专员: nick_name
-  二级团队: source
-  二级部门: source
-  一级团队: dept
-  一级部门: dept
-  二级部门经理: director_nick_name
-  二级部门leader: director_nick_name
-  一级部门经理: manager_nick_name
-  一级部门leader: manager_nick_name
+  # 注意：销售姓名字段在两张表中名字不同
+  #   目标表 ads_external_healthy_order_shipment_target → nick_name
+  #   实际表 ads_external_order_day_result             → salesman
+  # 选择哪个字段名取决于先决定走目标还是实际指标，不要混用。
+
+  # 目标表字段映射
+  target_table:
+    销售: nick_name
+    销售姓名: nick_name
+    销售人员: nick_name
+    销售专家: nick_name
+    销售专员: nick_name
+    工号: user_name           # JOIN 实际销售表的关键字段
+    销售工号: user_name
+    二级团队: source
+    二级部门: source
+    一级团队: dept
+    一级部门: dept
+    二级部门经理: director_nick_name
+    二级部门leader: director_nick_name
+    一级部门经理: manager_nick_name
+    一级部门leader: manager_nick_name
+
+  # 实际销售表字段映射（字段更丰富）
+  actual_table:
+    # 销售人 / 工号
+    销售: salesman
+    销售姓名: salesman
+    销售人员: salesman
+    销售专家: salesman
+    销售专员: salesman
+    工号: user_name
+    销售工号: user_name
+    # 组织
+    一级团队: dept
+    一级部门: dept
+    二级团队: source
+    二级部门: source
+    公司: sales_organization
+    销售组织: sales_organization
+    工厂: factory
+    生产工厂: factory
+    # 产品（三层分类）
+    产品大类: product_type
+    产品品类: product_type
+    品类: product_type
+    材料: material
+    原料: material
+    材质: material
+    # 当用户给的是带型号/规格/颜色/尺寸的"具体产品名"时，路由到 material_name (模糊查询)
+    具体产品: material_name
+    产品: material_name           # 默认按 material_name 模糊查；只有用户明显指"大类"时才用 product_type
+    型号: material_name
+    规格: material_name
+    SKU: material_name
+    商品名: material_name
+    物料名: material_name
+    # 订单明细（数值字段，按范围筛选）
+    单价: price
+    价格: price
+    件数: quantity
+    数量: quantity
+    总数量: quantity
+    # 地理
+    区域: area
+    销售区域: area
+    地区: area
+    国家: country
+    销售国家: country
+    目的国: country
+    # 客户
+    客户: customer_short_name
+    客户简称: customer_short_name
+    客户名: customer_short_name
+    买方: customer_short_name
+    # 时间（船期可单独筛选）
+    船期: ship_date
+    发货时间: ship_date
+    下单时间: order_date
+    订单日期: order_date

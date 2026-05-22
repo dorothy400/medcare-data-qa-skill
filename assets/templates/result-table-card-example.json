@@ -7,8 +7,8 @@
     }
   },
   "header": {
-    "title": { "tag": "plain_text", "content": "📊 销售额查询结果" },
-    "subtitle": { "tag": "plain_text", "content": "亚洲（除日韩）/ 日韩 · 月度 · 2026-01 ~ 2026-05" },
+    "title": { "tag": "plain_text", "content": "🎯 销售目标查询结果" },
+    "subtitle": { "tag": "plain_text", "content": "亚洲（除日韩）/ 日韩 · 月度接单目标 · 2026-01 ~ 2026-05" },
     "template": "blue"
   },
   "body": {
@@ -27,31 +27,27 @@
         "columns": [
           { "name": "month",           "display_name": "月份",          "data_type": "text" },
           { "name": "area",            "display_name": "区域",          "data_type": "text" },
-          { "name": "sales_amount",    "display_name": "销售额(USD)",   "data_type": "number", "format": { "symbol": "$", "precision": 2, "separator": true } },
-          { "name": "prev_month",      "display_name": "上月(USD)",     "data_type": "number", "format": { "symbol": "$", "precision": 2, "separator": true } },
+          { "name": "sales_target",   "display_name": "接单目标(USD)", "data_type": "number", "format": { "symbol": "$", "precision": 2, "separator": true } },
+          { "name": "prev_month",      "display_name": "上月目标(USD)", "data_type": "number", "format": { "symbol": "$", "precision": 2, "separator": true } },
           { "name": "mom_diff",        "display_name": "环比差值(USD)", "data_type": "number", "format": { "symbol": "$", "precision": 2, "separator": true } },
           { "name": "mom_pct",         "display_name": "环比 %",        "data_type": "number", "format": { "precision": 2, "separator": false } }
         ],
         "rows": [
-          { "month": "2026-01", "area": "亚洲（除日韩）", "sales_amount": 1234567.89, "prev_month": null,        "mom_diff": null,      "mom_pct": null },
-          { "month": "2026-02", "area": "亚洲（除日韩）", "sales_amount": 1345678.90, "prev_month": 1234567.89,  "mom_diff": 111111.01, "mom_pct": 9.00 },
-          { "month": "2026-03", "area": "亚洲（除日韩）", "sales_amount": 1278900.45, "prev_month": 1345678.90,  "mom_diff": -66778.45, "mom_pct": -4.96 },
-          { "month": "2026-01", "area": "日韩",          "sales_amount": 567890.12,  "prev_month": null,        "mom_diff": null,      "mom_pct": null },
-          { "month": "2026-02", "area": "日韩",          "sales_amount": 612345.67,  "prev_month": 567890.12,   "mom_diff": 44455.55,  "mom_pct": 7.83 }
+          { "month": "2026-01", "area": "亚洲（除日韩）", "sales_target": 1234567.89, "prev_month": null,        "mom_diff": null,      "mom_pct": null },
+          { "month": "2026-02", "area": "亚洲（除日韩）", "sales_target": 1345678.90, "prev_month": 1234567.89,  "mom_diff": 111111.01, "mom_pct": 9.00 },
+          { "month": "2026-03", "area": "亚洲（除日韩）", "sales_target": 1278900.45, "prev_month": 1345678.90,  "mom_diff": -66778.45, "mom_pct": -4.96 },
+          { "month": "2026-01", "area": "日韩",          "sales_target": 567890.12,  "prev_month": null,        "mom_diff": null,      "mom_pct": null },
+          { "month": "2026-02", "area": "日韩",          "sales_target": 612345.67,  "prev_month": 567890.12,   "mom_diff": 44455.55,  "mom_pct": 7.83 }
         ]
       },
       {
         "tag": "markdown",
-        "content": "💡 _可继续追问：按产品线拆分 / Top 10 区域排名 / 与去年同期对比_"
+        "content": "💡 _可继续追问：按产品线拆分 / Top 10 区域排名 / 与去年同期对比；或回复\"生成飞书表格\"导出明细到表格。_"
       },
       { "tag": "hr" },
       {
         "tag": "markdown",
-        "content": "<font color='grey'>**时间** 2026-01 ~ 2026-05  ·  **筛选** 无额外筛选  ·  **口径** 康养销售额  ·  **数据集** `ADS_YL.ads_external_healthy_order_shipment_target`  ·  **更新时间** 2026-05-15 06:00  ·  **口径说明** 接单指标；查询月份范围：2026-01 ~ 2026-05</font>"
-      },
-      {
-        "tag": "markdown",
-        "content": "💡 _需要把数据复制到飞书表格做分析？回复\"生成飞书表格\"，我会自动建表并返回链接。_"
+        "content": "<font color='grey'>**时间** 2026-01 ~ 2026-05\n**筛选** 无额外筛选\n**口径** 康养接单**目标**金额（USD，非实际销售额）\n**数据集** `ADS_YL.ads_external_healthy_order_shipment_target`\n**更新时间** 2026-05-15 06:00\n**口径说明** 接单目标；查询月份范围：2026-01 ~ 2026-05</font>"
       }
     ]
   }

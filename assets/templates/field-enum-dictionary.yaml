@@ -1,20 +1,23 @@
 fields:
   type:
-    display_name: 指标口径类型
-    description: 用于区分接单指标与出货指标；用户未明确时默认接单指标
+    display_name: 销售目标类型
+    description: 用于区分接单目标与出货目标；用户未明确时默认接单目标。注意 sql_value 仍然是历史命名 "接单指标"/"出货指标"，但语义是"目标"而非"实际指标"。
     values:
-      order_metric:
-        display_name: 接单指标
-        sql_value: 接单指标
+      order_target:
+        display_name: 接单目标
+        sql_value: 接单指标   # 历史命名，sql 中仍是这个字面值
         aliases:
           - 接单
+          - 接单目标
           - 下单
+          - 下单目标
           - 订单
-      shipment_metric:
-        display_name: 出货指标
-        sql_value: 出货指标
+      shipment_target:
+        display_name: 出货目标
+        sql_value: 出货指标   # 历史命名，sql 中仍是这个字面值
         aliases:
           - 出货
+          - 出货目标
           - 发货
 
   region:
