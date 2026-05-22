@@ -47,7 +47,7 @@
       { "tag": "hr" },
       {
         "tag": "markdown",
-        "content": "<font color='grey'>**时间** 2026-01 ~ 2026-05\n**筛选** 无额外筛选\n**口径** 康养接单**目标**金额（USD，非实际销售额）\n**数据集** `ADS_YL.ads_external_healthy_order_shipment_target`\n**更新时间** 2026-05-15 06:00\n**口径说明** 接单目标；查询月份范围：2026-01 ~ 2026-05</font>"
+        "content": "<font color='grey'>**时间口径**：2026-01 ~ 2026-05\n**筛选**：无额外筛选\n**口径**：康养接单目标金额（USD，非实际销售额）\n**数据集**：`ADS_YL.ads_external_healthy_order_shipment_target`\n**更新时间**：2026-05-15 06:00\n**口径说明**：接单目标；查询月份范围：2026-01 ~ 2026-05</font>"
       }
     ]
   }
