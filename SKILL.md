@@ -133,6 +133,13 @@ ORDER BY t.month, t.user_name;
 - 右轴 **100% 处必须画水平虚线**（灰色 `#999999`），让用户立即识别"高于线 = 超额、低于线 = 未达"
 - 单一 x 轴分类（部门 / 区域）下并列两个柱 + 折线点；多分类时折线连成趋势，方便横向对比哪个部门最接近达成
 
+🎯 **必须用 chart-conventions.md § 3 里的"标准 VChart spec 模板"** 直接照抄，三处换数据即可：
+1. 顶层 `"type": "common"`（**不是 "bar"**，否则会堆叠且折线无法上右轴）
+2. bar series 的 `xField: ["dept", "metric"]` **数组形式**让柱并列
+3. axes 数组配置 left（绑 bar）/ right（绑 line，必须含 `seriesId: ["line"]`）/ bottom（band 分类轴）
+
+worker 之前生成的卡片就是错在用了 `type: "bar"` 单 series、没 axes 数组，所以柱堆叠、折线掉左轴底。**严禁继续用旧写法**。
+
 ### 用户问法 → 处理方式
 
 | 用户问法 | 指标 | type 取值 |
